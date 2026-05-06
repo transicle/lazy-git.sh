@@ -113,10 +113,10 @@ if [[ -n "$(git ls-files --unmerged)" ]]; then
 	exit 1
 fi
 
-if [[ -z "$(git status --porcelain)" ]]; then
-	echo "No changes to commit." >&2
-	exit 0
-fi
+# if [[ -z "$(git status --porcelain)" ]]; then
+# 	echo "No changes to commit." >&2
+# 	exit 0
+# fi
 
 git push
 
