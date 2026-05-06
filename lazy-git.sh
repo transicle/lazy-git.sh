@@ -27,7 +27,8 @@ month=$(date +"%B")
 day=$(date +"%-d")
 year=$(date +"%Y")
 time=$(date +"%-I:%M %p")
-timezone_name=$(date +"%Z")
+timezone_source=${LAZY_GIT_TIMEZONE:-${TZ:-$(git config --get lazygit.timezone 2>/dev/null || true)}}
+timezone_name=$(TZ="$timezone_source" date +"%Z" 2>/dev/null || date +"%Z")
 
 committer_name=${committer_ident%% <*}
 committer_timezone_offset=${committer_ident##* }
