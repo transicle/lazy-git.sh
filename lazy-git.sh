@@ -18,10 +18,21 @@ if [[ -z "$upstream" ]]; then
 	exit 1
 fi
 
+if ! committer_ident=$(git var GIT_COMMITTER_IDENT 2>/dev/null); then
+	echo "Git committer identity is not configured." >&2
+	exit 1
+fi
+
 month=$(date +"%B")
 day=$(date +"%-d")
 year=$(date +"%Y")
 time=$(date +"%-I:%M %p")
+timezone_name=$(date +"%Z")
+
+committer_name=${committer_ident%% <*}
+committer_rest=${committer_ident#*<}
+committer_email=${committer_rest%%>*}
+committer_timezone_offset=${committer_ident##* }
 
 case "$day" in
 	1|21|31) suffix="st" ;;
@@ -30,7 +41,7 @@ case "$day" in
 	*) suffix="th" ;;
 esac
 
-commit_message="upd: lazily commit on $month $day$suffix, $year $time"
+commit_message="upd: lazily commit on $month $day$suffix, $year $time $timezone_name $committer_timezone_offset by $committer_name <$committer_email>"
 stash_name="lazy-git-autostash-$(date +%s)"
 temp_branch="lazy-git-temp-$(date +%s)"
 stashed=0
