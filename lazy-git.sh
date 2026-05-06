@@ -30,8 +30,6 @@ time=$(date +"%-I:%M %p")
 timezone_name=$(date +"%Z")
 
 committer_name=${committer_ident%% <*}
-committer_rest=${committer_ident#*<}
-committer_email=${committer_rest%%>*}
 committer_timezone_offset=${committer_ident##* }
 
 case "$day" in
@@ -41,7 +39,7 @@ case "$day" in
 	*) suffix="th" ;;
 esac
 
-commit_message="upd: lazily commit on $month $day$suffix, $year $time $timezone_name $committer_timezone_offset by $committer_name <$committer_email>"
+commit_message="upd: lazily commit on $month $day$suffix, $year $time $timezone_name $committer_timezone_offset by $committer_name"
 stash_name="lazy-git-autostash-$(date +%s)"
 temp_branch="lazy-git-temp-$(date +%s)"
 stashed=0
